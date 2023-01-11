@@ -71,6 +71,11 @@ namespace Tasks.Persistence.Repositories
         {
             var taskToFinish = _context.Tasks.Single(x => x.Id == id && x.UserId == userId);
             taskToFinish.IsExecuted = true;
-        }              
+        } 
+        public void AddCategory(Category category)
+        {
+            _context.Categories.Add(category);
+        }
+
     }
 }

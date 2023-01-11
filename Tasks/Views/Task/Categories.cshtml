@@ -1,9 +1,66 @@
-﻿
+﻿@model Tasks.Core.ViewModels.CategoriesViewModel;
+
+
 @{
     ViewData["Title"] = "Kategorie zadań.";
 }
 
-<h1>@ViewBag.Title</h1>
+<h1><img src=@Url.Content("~/Images/categoryIcon.png") height="50" />@ViewBag.Title</h1>
 
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-6">
+            @using (Html.BeginForm("Categories", "Task"))
+            {
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(x=>x.Category.Name,new {@class="form-control",autofocus="autofocus", placeholder="Wprowadź nazwę nowej kategorii."})
+                            @Html.ValidationMessageFor(x=>x.Category.Name)
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-primary">Dodaj</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
 
+<div id="categoriesTable">
+    <table class="table table-hover table-bordered mt-5">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nazwa</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Categories != null && Model.Categories.Any())
+            {
+                @foreach (var category in Model.Categories)
+                {
+                    <tr>
+                        <td>@category.Name</td>
+                        <td>
+                            <button class="btn btn-danger"
+                            onclick="deleteCategory('@category.Id',this)">
+                                Usuń
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td class="text-center" colspan="5">
+                        Brak kategorii dla zadań. Dodaj najpierw kategorie.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 

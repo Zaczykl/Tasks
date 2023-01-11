@@ -10,13 +10,16 @@
     <div class="col-auto">
         @Html.TextBoxFor(x=>x.FilterTasks.Title,new {@class="form-control",placeholder="Tytuł"})
     </div>
-    <div class="col-auto">
-        @Html.DropDownListFor(
-        x=>x.FilterTasks.CategoryId,
-        new SelectList(Model.Categories,"Id","Name"),
-        "--Wybierz kategorię",
-        new {@class="form-control"})
-    </div>
+ <div class="col-auto">
+    @if (Model.Categories != null)
+    {
+        @Html.DropDownListFor(x => x.FilterTasks.CategoryId, new SelectList(Model.Categories, "Id", "Name"), Model.Categories.FirstOrDefault().Name, new { @class = "form-control" })
+    }
+    else
+    {
+        @Html.DropDownListFor(x => x.FilterTasks.CategoryId, new List<SelectListItem> { new SelectListItem { Value = "", Text = "sampleText" } }, new { @class = "form-control" })
+    }
+</div>
     <div class="col-auto">
         @Html.CheckBoxFor(x=>x.FilterTasks.isExecuted,new{@class="form-check-input"})
         @Html.LabelFor(x=>x.FilterTasks.isExecuted,new{@class="form-check-label"})

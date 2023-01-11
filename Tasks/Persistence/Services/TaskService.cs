@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using Tasks.Core;
 using Tasks.Core.Models.Domains;
 using Tasks.Core.Service;
@@ -49,6 +50,11 @@ namespace Tasks.Persistence.Services
         public void Finish(int id, string userId)
         {
             _unitOfWork.TaskRepository.Finish(id, userId);
+            _unitOfWork.Complete();
+        }
+        public void AddCategory(Category category)
+        {
+            _unitOfWork.TaskRepository.AddCategory(category);
             _unitOfWork.Complete();
         }
     }

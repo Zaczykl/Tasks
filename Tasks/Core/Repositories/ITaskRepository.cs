@@ -19,5 +19,6 @@ namespace Tasks.Core.Repositories
         void Delete(int id, string userId);
 
         void Finish(int id, string userId);
+        void AddCategory(Category category);
     }
 }

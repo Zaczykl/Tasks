@@ -124,7 +124,20 @@ namespace Tasks.Controllers
         public IActionResult Categories()
         {
             var userId = User.GetUserId();
-            return View();
+            var vm = new CategoriesViewModel { Categories = _taskService.GetCategories() };
+            return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult Categories(Category category)
+        {
+            if (!ModelState.IsValid)
+            {
+                var vm = new CategoriesViewModel { Categories = _taskService.GetCategories() };
+                return View("Categories", vm);
+            }
+            _taskService.AddCategory(new Category { UserId = User.GetUserId(), Name = category.Name });
+            return RedirectToAction("Categories");
         }
     }
 }

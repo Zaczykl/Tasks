@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tasks.Persistence;
 
-namespace Tasks.Data.Migrations
+namespace Tasks.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230110130049_addedUserIdInCategories")]
-    partial class addedUserIdInCategories
+    [Migration("20230116131334_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -228,14 +228,20 @@ namespace Tasks.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Categories");
                 });
@@ -327,6 +333,13 @@ namespace Tasks.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Tasks.Core.Models.Domains.Category", b =>
+                {
+                    b.HasOne("Tasks.Core.Models.Domains.ApplicationUser", null)
+                        .WithMany("Categories")
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("Tasks.Core.Models.Domains.Task", b =>

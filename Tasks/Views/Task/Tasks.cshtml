@@ -3,23 +3,17 @@
 @{
     ViewData["Title"] = "Tasks";
 }
-
-<h1 class="mb-3">Moje zadania</h1>
+<h1 class="mb-3"><img src=@Url.Content("~/Images/tasksIcon.jpg") height="50" />Moje zadania</h1>
 
 <form id="filterForm" class="row gy-2 gx-3 align-items-center">
     <div class="col-auto">
         @Html.TextBoxFor(x=>x.FilterTasks.Title,new {@class="form-control",placeholder="Tytuł"})
     </div>
  <div class="col-auto">
-    @if (Model.Categories != null)
-    {
-        @Html.DropDownListFor(x => x.FilterTasks.CategoryId, new SelectList(Model.Categories, "Id", "Name"), Model.Categories.FirstOrDefault().Name, new { @class = "form-control" })
-    }
-    else
-    {
-        @Html.DropDownListFor(x => x.FilterTasks.CategoryId, new List<SelectListItem> { new SelectListItem { Value = "", Text = "sampleText" } }, new { @class = "form-control" })
-    }
-</div>
+        @Html.DropDownListFor(x => x.FilterTasks.CategoryId, new SelectList(Model.Categories, "Id", "Name"), "Wyświetl wszystkie", new { @class = "form-control" })
+
+
+    </div>
     <div class="col-auto">
         @Html.CheckBoxFor(x=>x.FilterTasks.isExecuted,new{@class="form-check-input"})
         @Html.LabelFor(x=>x.FilterTasks.isExecuted,new{@class="form-check-label"})
@@ -34,7 +28,7 @@
 </div>
 
 @section Scripts
-    {
+{
     <script type="text/javascript">
 
 

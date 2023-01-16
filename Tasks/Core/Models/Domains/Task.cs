@@ -13,7 +13,6 @@ namespace Tasks.Core.Models.Domains
         public string Title { get; set; }
 
         [MaxLength(250)]
-        [Required(ErrorMessage = "Pole opis jest wymagane.")]
         [Display(Name = "Opis")]
         public string Description { get; set; }
 

@@ -19,9 +19,9 @@ namespace Tasks.Persistence.Services
            return _unitOfWork.TaskRepository.Get(userId, isExecuted, categoryId, title);
         }
 
-        public IEnumerable<Category> GetCategories()
+        public IEnumerable<Category> GetCategories(string userId)
         {
-            return _unitOfWork.TaskRepository.GetCategories();
+            return _unitOfWork.TaskRepository.GetCategories(userId);
         }
 
         public Task Get(int id, string userId)
@@ -47,6 +47,12 @@ namespace Tasks.Persistence.Services
             _unitOfWork.Complete();
         }
 
+        public void DeleteCategory(int id, string userId)
+        {
+            _unitOfWork.TaskRepository.DeleteCategory(id, userId);
+            _unitOfWork.Complete();
+        }
+
         public void Finish(int id, string userId)
         {
             _unitOfWork.TaskRepository.Finish(id, userId);
@@ -55,6 +61,11 @@ namespace Tasks.Persistence.Services
         public void AddCategory(Category category)
         {
             _unitOfWork.TaskRepository.AddCategory(category);
+            _unitOfWork.Complete();
+        }
+        public void CreateDefaultCategory(string userId)
+        {
+            _unitOfWork.TaskRepository.CreateDefaultCategory(userId);
             _unitOfWork.Complete();
         }
     }

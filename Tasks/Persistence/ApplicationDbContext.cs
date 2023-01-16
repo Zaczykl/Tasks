@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Tasks.Core;
 using Tasks.Core.Models.Domains;
@@ -14,6 +15,7 @@ namespace Tasks.Persistence
             : base(options)
         {
         }
+
         public DbSet<Category> Categories { get; set; }
         public DbSet<Task> Tasks { get; set; }
     }

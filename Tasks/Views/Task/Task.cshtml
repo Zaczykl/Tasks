@@ -23,11 +23,10 @@
 
     <div class="form-group">
         @Html.LabelFor(x=>x.Task.CategoryId)
-        @Html.DropDownListFor(
-            x=>x.Task.CategoryId,
-            new SelectList(Model.Categories,"Id","Name"),
-            "--wybierz kategorię--",
-            new {@class="form-control"})
+        @if (Model.Categories != null && Model.Categories.Any())
+            @Html.DropDownListFor(x => x.Task.CategoryId, new SelectList(Model.Categories, "Id", "Name", Model.Categories.FirstOrDefault().Id), new { @class = "form-control" })      
+        else
+            @Html.DropDownListFor(x => x.Task.CategoryId, new List<SelectListItem> { new SelectListItem { Value = "", Text = "Musisz najpierw dodać kategorie !!!" } }, new { @class = "form-control" })   
         @Html.ValidationMessageFor(x=>x.Task.CategoryId)
     </div>
 

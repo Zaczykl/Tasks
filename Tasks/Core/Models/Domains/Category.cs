@@ -18,6 +18,7 @@ namespace Tasks.Core.Models.Domains
         [Display(Name = "Nazwa")]
         public string Name { get; set; }
         public string UserId { get; set; }
+
         public ICollection<Task> Tasks { get; set; }
     }
 }

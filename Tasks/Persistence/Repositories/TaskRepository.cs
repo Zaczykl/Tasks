@@ -4,6 +4,7 @@ using System.Linq;
 using Tasks.Core;
 using Tasks.Core.Models.Domains;
 using Tasks.Core.Repositories;
+using Tasks.Persistence.Observer;
 
 namespace Tasks.Persistence.Repositories
 {
@@ -35,9 +36,10 @@ namespace Tasks.Persistence.Repositories
             return tasks.OrderBy(x => x.Term).ToList();
         }
 
-        public IEnumerable<Category> GetCategories()
+        public IEnumerable<Category> GetCategories(string userId)
         {
-            return _context.Categories.OrderBy(x=>x.Name).ToList();
+            var selCategories= _context.Categories.Where(x => x.UserId == userId).OrderBy(x => x.Name).ToList();
+            return selCategories;
         }
 
         public Task Get(int id, string userId)
@@ -67,6 +69,12 @@ namespace Tasks.Persistence.Repositories
             _context.Tasks.Remove(taskToDelete);
         }
 
+        public void DeleteCategory(int id, string userId)
+        {
+            var categoryToDelete = _context.Categories.Single(x => x.Id == id && x.UserId == userId);
+            _context.Categories.Remove(categoryToDelete);
+        }
+
         public void Finish(int id, string userId)
         {
             var taskToFinish = _context.Tasks.Single(x => x.Id == id && x.UserId == userId);
@@ -77,5 +85,14 @@ namespace Tasks.Persistence.Repositories
             _context.Categories.Add(category);
         }
 
+        public void CreateDefaultCategory(string userId)
+        {
+            var defaultCategory = new Category { Name = "Ogólna", UserId = userId };
+            _context.Categories.Add(defaultCategory);
+        }
+        public void OnUpdate(string userId)
+        {
+            //dodanie domyślnej kategorii
+        }
     }
 }

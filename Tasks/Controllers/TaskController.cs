@@ -19,13 +19,13 @@ namespace Tasks.Controllers
             _taskService = taskService;
         }
         public IActionResult Tasks()
-        {
+        {            
             var userId = User.GetUserId();
 
             var vm = new TasksViewModel
             {
                 Tasks = _taskService.Get(userId),
-                Categories = _taskService.GetCategories(),
+                Categories = _taskService.GetCategories(userId),
                 FilterTasks = new FilterTasks()
             };
 
@@ -57,7 +57,7 @@ namespace Tasks.Controllers
                 Task = task,
                 Heading=id==0?
                 "Dodawanie nowego zadania" : "Edytowanie zadania",
-                Categories= _taskService.GetCategories()
+                Categories= _taskService.GetCategories(userId)
             };
 
             return View(vm);
@@ -77,7 +77,7 @@ namespace Tasks.Controllers
                     Task = task,
                     Heading = task.Id == 0 ?
                     "Dodawanie nowego zadania" : "Edytowanie zadania",
-                    Categories = _taskService.GetCategories()
+                    Categories = _taskService.GetCategories(userId)
                 };
                 return View("Task", vm);
             }
@@ -107,6 +107,22 @@ namespace Tasks.Controllers
         }
 
         [HttpPost]
+        public IActionResult DeleteCategory(int id)
+        {
+            try
+            {
+                var userId = User.GetUserId();
+                _taskService.DeleteCategory(id, userId);
+            }
+            catch (Exception ex)
+            {
+                //logowanie do pliku
+                return Json(new { success = false, message = ex.Message });
+            }
+            return Json(new { success = true });
+        }
+
+        [HttpPost]
         public IActionResult Finish(int id)
         {
             try
@@ -124,7 +140,7 @@ namespace Tasks.Controllers
         public IActionResult Categories()
         {
             var userId = User.GetUserId();
-            var vm = new CategoriesViewModel { Categories = _taskService.GetCategories() };
+            var vm = new CategoriesViewModel { Categories = _taskService.GetCategories(userId) };
             return View(vm);
         }
 
@@ -133,7 +149,7 @@ namespace Tasks.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var vm = new CategoriesViewModel { Categories = _taskService.GetCategories() };
+                var vm = new CategoriesViewModel { Categories = _taskService.GetCategories(User.GetUserId()) };
                 return View("Categories", vm);
             }
             _taskService.AddCategory(new Category { UserId = User.GetUserId(), Name = category.Name });

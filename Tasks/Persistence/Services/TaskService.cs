@@ -68,5 +68,9 @@ namespace Tasks.Persistence.Services
             _unitOfWork.TaskRepository.CreateDefaultCategory(userId);
             _unitOfWork.Complete();
         }
+        public bool CategoryAlreadyExist(Category category)
+        {
+            return _unitOfWork.TaskRepository.CategoryAlreadyExist(category);
+        }
     }
 }

@@ -152,6 +152,12 @@ namespace Tasks.Controllers
                 var vm = new CategoriesViewModel { Categories = _taskService.GetCategories(User.GetUserId()) };
                 return View("Categories", vm);
             }
+            else if (_taskService.CategoryAlreadyExist(category))
+            {
+                var vm = new CategoriesViewModel { Categories = _taskService.GetCategories(User.GetUserId()) };
+                ModelState.AddModelError("Name", "Kategoria znajduje się już w bazie danych.");
+                return View(vm);
+            }
             _taskService.AddCategory(new Category { UserId = User.GetUserId(), Name = category.Name });
             return RedirectToAction("Categories");
         }

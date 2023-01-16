@@ -1,13 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using Tasks.Areas.Identity.Pages.Account;
+﻿using System.Collections.Generic;
 using Tasks.Core.Models.Domains;
-using Tasks.Persistence.Observer;
 
 namespace Tasks.Core.Repositories
 {
-    public interface ITaskRepository: IObserver
+    public interface ITaskRepository
     {
         IEnumerable<Task> Get(string userId, bool isExecuted = false, int categoryId = 0, string title = null);
 
@@ -26,6 +22,6 @@ namespace Tasks.Core.Repositories
         void Finish(int id, string userId);
         void AddCategory(Category category);
         void CreateDefaultCategory(string userId);
-        new void OnUpdate(string name = null);
+        bool CategoryAlreadyExist(Category category);
     }
 }

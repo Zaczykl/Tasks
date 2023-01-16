@@ -23,5 +23,6 @@ namespace Tasks.Core.Service
 
         void AddCategory(Category category);
         void CreateDefaultCategory(string userId);
+        bool CategoryAlreadyExist(Category category);
     }
 }

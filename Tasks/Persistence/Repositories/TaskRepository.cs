@@ -4,7 +4,6 @@ using System.Linq;
 using Tasks.Core;
 using Tasks.Core.Models.Domains;
 using Tasks.Core.Repositories;
-using Tasks.Persistence.Observer;
 
 namespace Tasks.Persistence.Repositories
 {
@@ -38,8 +37,8 @@ namespace Tasks.Persistence.Repositories
 
         public IEnumerable<Category> GetCategories(string userId)
         {
-            var selCategories= _context.Categories.Where(x => x.UserId == userId).OrderBy(x => x.Name).ToList();
-            return selCategories;
+            var categories= _context.Categories.Where(x => x.UserId == userId).OrderBy(x => x.Name).ToList();
+            return categories;
         }
 
         public Task Get(int id, string userId)
@@ -90,9 +89,9 @@ namespace Tasks.Persistence.Repositories
             var defaultCategory = new Category { Name = "Ogólna", UserId = userId };
             _context.Categories.Add(defaultCategory);
         }
-        public void OnUpdate(string userId)
+        public bool CategoryAlreadyExist(Category category)
         {
-            //dodanie domyślnej kategorii
+            return _context.Categories.Any(x => x.Name == category.Name);
         }
     }
 }

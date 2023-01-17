@@ -140,19 +140,25 @@ namespace Tasks.Controllers
         public IActionResult Categories()
         {
             var userId = User.GetUserId();
-            var vm = new CategoriesViewModel { Categories = _taskService.GetCategories(userId) };
+            var vm = new CategoriesViewModel { Categories = _taskService.GetCategories(userId), Category = new Category { Id = 0 } };
             return View(vm);
         }
 
         [HttpPost]
         public IActionResult Categories(Category category)
-        {
-            if (!ModelState.IsValid)
+        {            
+            if (!ModelState.IsValid )
             {
                 var vm = new CategoriesViewModel { Categories = _taskService.GetCategories(User.GetUserId()) };
                 return View("Categories", vm);
             }
-            else if (_taskService.CategoryAlreadyExist(category))
+            bool categoryAlreadyExist = _taskService.CategoryAlreadyExist(category);
+            if (category.Id>0 && !categoryAlreadyExist)
+            {
+                _taskService.UpdateCategory(category);
+                return RedirectToAction("Categories");
+            }
+            if (categoryAlreadyExist)
             {
                 var vm = new CategoriesViewModel { Categories = _taskService.GetCategories(User.GetUserId()) };
                 ModelState.AddModelError("Name", "Kategoria znajduje się już w bazie danych.");

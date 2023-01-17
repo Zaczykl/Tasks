@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Tasks.Core;
 using Tasks.Core.Models.Domains;
 using Tasks.Core.Repositories;
@@ -91,7 +92,12 @@ namespace Tasks.Persistence.Repositories
         }
         public bool CategoryAlreadyExist(Category category)
         {
-            return _context.Categories.Any(x => x.Name == category.Name);
+            return _context.Categories.Any(x => x.Name == category.Name && x.Id != category.Id);
+        }
+        public void UpdateCategory(Category category)
+        {
+            var categoryToUpdate = _context.Categories.Single(x => x.Id == category.Id);
+            categoryToUpdate.Name=category.Name;
         }
     }
 }

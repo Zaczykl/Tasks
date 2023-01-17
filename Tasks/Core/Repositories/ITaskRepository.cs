@@ -23,5 +23,6 @@ namespace Tasks.Core.Repositories
         void AddCategory(Category category);
         void CreateDefaultCategory(string userId);
         bool CategoryAlreadyExist(Category category);
+        void UpdateCategory(Category category);
     }
 }

@@ -72,5 +72,11 @@ namespace Tasks.Persistence.Services
         {
             return _unitOfWork.TaskRepository.CategoryAlreadyExist(category);
         }
+
+        public void UpdateCategory(Category category)
+        {
+            _unitOfWork.TaskRepository.UpdateCategory(category);
+            _unitOfWork.Complete();
+        }
     }
 }

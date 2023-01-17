@@ -42,8 +42,8 @@
                     @foreach (var category in Model.Categories)
                     {
                         <tr>
-                            <td><a href="javascript:editCategoryName('@category.Name','@category.Id')">@category.Name</a></td>
-                            <td>
+                            <td class="col-9"><a href="javascript:editCategoryName('@category.Name','@category.Id')">@category.Name</a></td>
+                            <td class="col-3">
                                 <button class="btn btn-danger justify-content-center" id="@category.Id"
                                 onclick="deleteCategory('@category.Id',this)">
                                     Usuń
